@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/head'); %>
+</head>
+
+
+<body data-theme="light">
+    <header>
+        <%- include('../partials/header'); %>
+    </header>
+
+    <main>
+        <div class="container p-2">
+            <div class="p-1">
+                <h4 class="theme-text mt-2 ms-1" style="font-weight: 400; user-select: none;"><i class="fas fa-cog"></i>
+                    | Current Guild Settings</h4>
+                <div class="ms-1 form-responsive">
+                    <% const server=bot.guilds.cache.get(guild_id) %>
+                        <form action="/guild_settings" method="POST" id="settings">
+                            <div class="form-group mt-3">
+                                <label class="theme-text" for="channel">Heist Channel</label>
+                                <select id="channel" name="channel" class="form-select"
+                                    aria-label="Default select example">
+                                    <% let channel=server.channels.cache.get(heistConf.settings.heistChannel) %>
+                                        <option value="<%= channel?.id || null %>">
+                                            <%= channel?.name || 'Select the channel' %>
+                                        </option>
+                                        <% for(let channel of server.channels.cache.filter(a => a.type == 'GUILD_TEXT').map(x=> x)) {%>
+                                            <% if(channel.id===heistConf.settings.heistChannel) continue;%>
+                                                <option value="<%= channel.id %>">
+                                                    <%= channel.name %>
+                                                </option>
+                                                <% } %>
+                                </select>
+                            </div>
+
+                            <div class="form-group mt-2">
+                                <label class="theme-text" for="invite_link">Invite Link</label>
+                                <input value="<%= heistConf.settings.inviteLink %>" class="form-control"
+                                    name="invite_link" id="invite_link" type="text" placeholder="Some cool invite link">
+                            </div>
+
+                            <div class="form-group mt-2">
+                                <label class="theme-text" for="minHeistAmount">Minimum Heist Amount</label>
+                                <input min="0" value="<%= heistConf.settings.minHeistAmount %>" class="form-control"
+                                    name="min_heist_amount" id="min_heist_amount" type="number" placeholder="Amount">
+                            </div>
+
+                            <div class="form-group mt-2 text-end">
+                                <input name="guild_id" value="<%= server.id %>" style="display: none">
+                                <button class="btn btn-primary mt-2 py-1 px-4" type="button"
+                                    onclick="save('<%= server.id %>')">Save Changes</button>
+                            </div>
+                        </form>
+                </div><br>
+
+                <h4 class="theme-text mt-2 ms-1" style="font-weight: 400; user-select: none;"><i class="fas fa-cog"></i>
+                    | Heist Partners</h4>
+                <div class="ms-1">
+
+                    <div class="form-group my-2">
+                        <input id="searchGuild1" type="text" class="form-control form-control-sm search"
+                            placeholder="Search guild name or id">
+                    </div>
+                </div>
+                <div class="guild-settings-container">
+                    <% for(let guildData of partnersList) { %>
+                        <% const guild=bot.guilds.cache.find(x=> x.id === guildData.partnerGuildId) %>
+                            <div class="guild-card rounded m-1">
+                                <img src="<%= guild?.iconURL({ dynamic: true }) || '/imgs/def.png'%>"
+                                    class="rounded-circle" alt="<%= guildData.partnerGuildName %>">
+                                <p class="guild-title px-2 text-center">
+                                    <%= guildData.partnerGuildName %>
+                                    <p style="display: none"><%= guildData.partnerGuildId %></p>
+                                </p>
+                                <div>
+                                    <p class="mb-0">Blacklisted :
+                                        <%= guildData?.blacklisted ? "Yes" : "No" %>
+                                    </p>
+                                    <p class="mb-0">Cooldown left:
+                                        <%= guildData.cooldownLeft && (guildData.cooldownLeft>
+                                            Date.now())? prettyMilliseconds(guildData.cooldownLeft - Date.now(), {
+                                            secondsDecimalDigits: 0 }): "0" %>
+                                    </p>
+                                    <p class="mb-0">Pings:
+                                        <%= guildData.pings.length %>
+                                    </p>
+                                    <button class="btn btn-sm btn-outline-primary px-3 mt-2"
+                                        onclick="showGuildSettings('<%= JSON.stringify(guildData) %>')">Edit
+                                        settings</button>
+                                    <!-- 123 is guild id -->
+                                </div>
+                            </div>
+                            <% } %>
+
+                                <!-- ADD SERVER -->
+                                <%- include('../partials/add_server.ejs') %>
+                </div>
+            </div>
+
+
+            <div class="modal fade theme-modal" id="guildSettingsModal" data-bs-keyboard="false" tabindex="-1"
+                aria-hidden="true"></div>
+    </main>
+
+
+    <%- include('../partials/footer'); %>
+        <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                $("#searchGuild1").on("keyup", function () {
+                    var value = $(this).val().toLowerCase();
+                    $(".guild-card").filter(function () {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+                });
+            });
+        </script>
+</body>
+
+</html>

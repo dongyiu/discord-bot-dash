@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head'); %>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+    <script src="https://cdn.tailwindcss.com/"></script>
+    <link rel="stylesheet" href="https://unpkg.com/flowbite@1.3.4/dist/flowbite.min.css" />
+    <script src="https://unpkg.com/flowbite@1.3.4/dist/flowbite.js"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.9.1/dist/cdn.min.js"></script>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body data-theme="light">
+    <main>
+        <div x-data="{ sidebarOpen: false }" class="flex overflow-x-hidden h-screen">
+            <%- include('../partials/sidebar'); %>
+                <div class="flex-1">
+                <%- include('../partials/header2'); %>
+              <main class="p-6">
+                <% if(action == 'heistSettings') { %>
+                    <%- include('../partials/heistSettings'); %>
+                <% } else if(action == 'heistPartners') { %>
+                    <%- include('../partials/heistPartners'); %>
+                <% } else if(action == 'donoSettings') { %>
+                    <%- include('../partials/donoSettings'); %>
+                <% } else if(action == 'donoLb') { %>
+                    <%- include('../partials/donoLb'); %>
+                <% } else if(action == 'donoItems') { %>
+                    <%- include('../partials/donoItems'); %>
+                <% } else if(action == 'heistEvents') { %>
+                    <%- include('../partials/heistEvents'); %>
+                <% } else { %>
+                    <%- include('../partials/comingsoon'); %>
+                <% } %>
+              </main>
+            </div>
+        </div>
+    </main>
+    <%- include('../partials/footer'); %>
+  </body>
+</html>

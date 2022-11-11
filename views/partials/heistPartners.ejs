@@ -1,0 +1,66 @@
+
+    <main>
+        <div class="container p-2">
+            <div class="p-1">
+                <h4 class="theme-text mt-2 ms-1" style="font-weight: 400; user-select: none;"><i class="fas fa-cog"></i>
+                    | Heist Partners</h4>
+                <div class="ms-1">
+
+                    <div class="form-group my-2">
+                        <input id="searchGuild1" type="text" class="form-control form-control-sm search"
+                            placeholder="Search guild name or id">
+                    </div>
+                </div>
+                <div class="guild-settings-container">
+                    <% for(let guildData of partnersList) { %>
+                        <% const guild=bot.guilds.cache.find(x=> x.id === guildData.partnerGuildId) %>
+                            <div class="guild-card rounded m-1">
+                                <img src="<%= guild?.iconURL({ dynamic: true }) || '/imgs/def.png'%>"
+                                    class="rounded-circle" alt="<%= guildData.partnerGuildName %>">
+                                <p class="guild-title px-2 text-center">
+                                    <%= guildData.partnerGuildName %>
+                                    <p style="display: none"><%= guildData.partnerGuildId %></p>
+                                </p>
+                                <div>
+                                    <p class="mb-0">Blacklisted :
+                                        <%= guildData?.blacklisted ? "Yes" : "No" %>
+                                    </p>
+                                    <p class="mb-0">Cooldown left:
+                                        <%= guildData.cooldownLeft && (guildData.cooldownLeft>
+                                            Date.now())? prettyMilliseconds(guildData.cooldownLeft - Date.now(), {
+                                            secondsDecimalDigits: 0 }): "0" %>
+                                    </p>
+                                    <p class="mb-0">Pings:
+                                        <%= guildData.pings.length %>
+                                    </p>
+                                    <button class="btn btn-sm btn-outline-primary px-3 mt-2"
+                                        onclick="showGuildSettings('<%= JSON.stringify(guildData) %>')">Edit
+                                        settings</button>
+                                    <!-- 123 is guild id -->
+                                </div>
+                            </div>
+                            <% } %>
+
+                                <!-- ADD SERVER -->
+                                <%- include('../partials/add_server.ejs') %>
+                </div>
+            </div>
+
+
+            <div class="modal fade theme-modal" id="guildSettingsModal" data-bs-keyboard="false" tabindex="-1"
+                aria-hidden="true"></div>
+    </main>
+
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#searchGuild1").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $(".guild-card").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>

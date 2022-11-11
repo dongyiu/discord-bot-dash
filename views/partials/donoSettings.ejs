@@ -1,0 +1,246 @@
+<% 
+      const guild= bot.guilds.cache.find(x=> x.id === guild_id)
+      const roles = []
+      const test = guild.roles.cache.toJSON().filter(a => a.rawPosition != 0).map(a => roles.push({ name : a.name, id : a.id }))
+      const channels = guild.channels.cache.filter(a => a.type == 'GUILD_TEXT') 
+      const selectedRoles = donoconfig._doc?.manager_roles?.filter(a => roles.find(b => b.id == a)) || []
+      const selectedChannel = donoconfig._doc?.logChannel
+      const autoRoles = donoconfig.autoroles
+   %>
+
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+   <script defer src="https://unpkg.com/alpinejs@3.9.1/dist/cdn.min.js"></script>
+
+   <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+
+<div class="m-auto">
+   <div>
+      <div class="mt-5 rounded-lg shadow">
+
+         <div class="flex">
+            <div class="flex-1 pl-4 overflow-hidden">
+               <h1 class="px-4 py-2.5 inline text-2xl font-semibold leading-none">Manager</h1>
+            </div>
+         </div>
+         <div class="pl-5 py-2.5">
+            <select id="managerRole" class="selectpicker bg-white rounded-lg shadow" multiple data-live-search="true">
+               <% roles.map((a,x) => {
+                  if(selectedRoles.includes(a.id)) {%>
+                     <option selected="selected" value="<%= a.id %>">@<%= a.name %></option>
+                  <%} else {%>
+                     <option value="<%= a.id %>">@<%= a.name %></option>
+                  <%}%>
+               <%})%>
+            </select>
+         </div>
+         <div class="py-3"><hr class="mt-4"></div>
+
+         
+         <div class="flex">
+            <div class="flex-1 pl-4 overflow-hidden">
+               <h1 class="px-4 py-2.5 inline text-2xl font-semibold leading-none">Logging Channel</h1>
+            </div>
+         </div>
+         <div class="pl-5 py-2.5">
+         <select id="loggingChannel" class="selectpicker bg-white rounded-lg shadow" data-live-search="true">
+            <% channels.toJSON().map((a,x) => {
+               if(selectedChannel == (a.id)) {%>
+                  <option selected="selected" value="<%= a.id %>">#<%= a.name %></option>
+               <%} else {%>
+                  <option value="<%= a.id %>">#<%= a.name %></option>
+               <%}%>
+            <%})%>
+            </select>
+         </div>
+         <div class="py-3"><hr class="mt-4"></div>
+         
+         <div class="flex">
+            <div class="flex-1 pl-4 overflow-hidden">
+               <h1 class="px-4 py-2.5 inline text-2xl font-semibold leading-none">Auto Roles</h1>
+            </div>
+         </div>
+         
+         
+         
+            <div class="px-12 py-6 grid grid-cols-3 gap-4 content-start ...">
+               <div data-toggle="modal" data-target="#exampleModal"><i class="fa fa-plus text-green-300 text-2xl gap-2" ></i></div>
+               <div>Role Name</div>
+               <div>Amount</div>
+            </div>
+            <%- include('./donoSettingsModal'); %>
+            <div id="autoROLES">
+               
+               <!-- <template x-for="role in getRole">
+                  <div class="px-12 py-6 grid grid-cols-3 gap-4 content-start ...">
+                     <div x-on:click="removeRole(role.id)"><i class="fa fa-trash text-red-300 text-2xl gap-2" ></i></div>
+                     <div x-text=`@${role.name}`></div>
+                     <div x-text="Number(data.find(a => a.id == role.id)?.amount)?.toLocaleString()"></div>
+                  </div>
+               </template>
+               <div x-data="{ open: showError }">                  
+                  <div x-show="open" x-transition>
+                     <div class="text-red-600 text-center">
+                        You have not added any auto roles yet !
+                     </div> 
+                  </div>
+              </div> -->
+
+            </div>
+
+
+         <div class="py-3"><hr class="mt-4"></div>
+
+
+         <div class="flex flex-row-reverse p-3">
+            <div class="flex-initial pl-3">
+               <button onclick="saveData()" type="button" class="flex items-center px-5 py-2.5 font-medium tracking-wide text-white capitalize   bg-black rounded-md hover:bg-gray-800  focus:outline-none focus:bg-gray-900  transition duration-300 transform active:scale-95 ease-in-out">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF">
+                     <path d="M0 0h24v24H0V0z" fill="none"></path>
+                     <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
+                     <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zm-7-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM6 6h9v4H6z"></path>
+                  </svg>
+                  <span class="pl-2 mx-1">Save</span>
+               </button>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+<script defer>
+   let count = 0
+   $('select').selectpicker();
+   const guild_id = JSON.parse('<%- JSON.stringify(guild_id) %>')
+   const allRoles = JSON.parse('<%- JSON.stringify(roles).replace(/[\/\(\)\']/g, "\\$&") %>')
+   let autoRoles = JSON.parse('<%- JSON.stringify(autoRoles).replace(/[\/\(\)\']/g, "\\$&") %>')
+
+   function loadData() {
+      fixData(autoRoles).map(role => {
+         $('#autoROLES').append(
+            `<div class="px-12 py-6 grid grid-cols-3 gap-4 content-start ...">
+                        <div onclick="removeRole(${role.id})"><i class="fa fa-trash text-red-300 text-2xl gap-2" ></i></div>
+                        <div>@${role.name}</div>
+                        <div>${Number(data().data.find(a => a.id == role.id)?.amount)?.toLocaleString()}</div>
+                     </div>`
+         )
+      })
+   }
+
+   async function addRole() {
+      const amount = Number($('#autoRoleAmount').val())
+      const role = $('#autoRole').val()
+      if(autoRoles.map(a => a.id).includes(role)) {
+         return notyf.error('Role has already been added before!')
+      }
+      else if(autoRoles.find(a => a.amount == amount)) {
+         return notyf.error('Amount has already been added before!')
+      }
+      else if(!amount) {
+         return notyf.error('This is not an amount')
+      }
+      else {
+         const addRole = allRoles.find(a => a.id == role)
+         autoRoles.unshift({
+            id : addRole.id,
+            amount
+         });
+         console.log(autoRoles)
+         $("#exampleModal .close").click()
+         notyf.success(`Successfully added the role ${addRole.name} as amount ${amount}`)
+         $('#autoROLES').empty()
+         loadData()
+      }
+   }
+
+   loadData()
+   async function removeRole(id) {
+      autoRoles = autoRoles.filter(a => a.id != id)
+      $('#autoROLES').empty()
+      loadData()
+   }
+   function fixData(data) {
+      return data.sort((a,b) => Number(a.amount) - Number(b.amount)).reverse().map(a => a.id).map(a => allRoles.find(b => b.id == a) || { name : 'deleted-role', id : a })
+   }
+   function saveData() {
+      const log = $('#loggingChannel').val()
+      const manager = $('#managerRole').val()
+      const data = autoRoles || []
+      $.ajax({
+         url: '/save_settings',
+         method: 'POST',
+         data : { log, manager, data, guild_id },
+         success: function (data) {
+            if(data.error) return notyf.error(data.error)
+            else notyf.success(`All changes has been saved.`)
+            location.reload()
+         }
+      })
+   }
+   function data() {
+      return {
+         roles : allRoles,
+         data : autoRoles,
+         getRole() {
+            const abc = this.data.sort((a,b) => Number(a.amount) - Number(b.amount)).reverse().map(a => a.id).map(a => allRoles.find(b => b.id == a) || { name : 'deleted-role', id : a })
+            return abc
+            // return this.roles;
+         },
+         niceList() {
+            const list = []
+            this.getRole()
+         },
+         removeRole(id) {
+            this.data = this.data.filter(a => a.id != id)
+         },
+         showError() {
+            if(this.data.length) {
+               return false
+            }
+            return true
+         },
+         test() {
+            const amount = Number($('#autoRoleAmount').val())
+            const role = $('#autoRole').val()
+            if(this.data.map(a => a.id).includes(role)) {
+               return notyf.error('Role has already been added before!')
+            }
+            else if(this.data.find(a => a.amount == amount)) {
+               return notyf.error('Amount has already been added before!')
+            }
+            else if(!amount) {
+               return notyf.error('This is not an amount')
+            }
+            else {
+               const addRole = allRoles.find(a => a.id == role)
+               this.data.unshift({
+                  id : addRole.id,
+                  amount
+               });
+               $("#exampleModal .close").click()
+               return notyf.success(`Successfully added the role ${addRole.name} as amount ${amount}`)
+            }
+         },
+         save() {
+            const log = $('#loggingChannel').val()
+            const manager = $('#managerRole').val()
+            const data = this.data || []
+            $.ajax({
+               url: '/save_settings',
+               method: 'POST',
+               data : { log, manager, data, guild_id },
+               success: function (data) {
+                  if(data.error) return notyf.error(data.error)
+                  else notyf.success(`All changes has been saved.`)
+                  location.reload()
+               }
+            })
+         }
+         
+      }
+   }
+   
+</script>

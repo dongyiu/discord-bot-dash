@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/head'); %>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.0/css/all.css">
+</head>
+
+
+<body data-theme="light">
+    <header>
+        <%- include('../partials/header'); %>
+    </header>
+
+    <main>
+        <div style="text-align: center;margin-top: 15vw;">
+            <h1><%= status %></h1>
+            <p style="
+            font-style: oblique;
+            font-variant: small-caps;
+            font-weight: 400;
+        "><%= message %></p>
+        </div>
+    </main>
+
+    <footer>
+        <%- include('../partials/footer'); %>
+    </footer>
+    
+</body>
+
+</html>

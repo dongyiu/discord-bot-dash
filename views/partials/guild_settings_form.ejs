@@ -1,0 +1,83 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-body" id="select2parent">
+            <h4 class="theme-text" style="font-weight: 400;">Edit guild settings</h4>
+            <% const guild= bot.guilds.cache.find(x=> x.id === guildData.guildId) %>
+            <% const roles = guild.roles.cache.map(x => {
+                if(x.name === "@everyone") return { name: x.name, id: x.name }
+                return { name: `@` + x.name, id: `<@&${x.id}>`}
+            })|| []
+            
+            roles.push({ name: `@here`, id: `@here`}) %>
+
+                <div class="form-group mt-3">
+                    <label class="theme-text" style="--this-text-opacity: .8;" for="default_cooldown">Default
+                        Cooldown</label>
+                    <input min="0" max="100" value="<%= guildData.postCooldownHours || 12 %>" class="form-control" type="number"
+                        placeholder="Default cooldown" name="default_cooldown" id="default_cooldown">
+                </div>
+
+                <div class="form-group mt-3">
+                    <label class="theme-text" style="--this-text-opacity: .8;" for="roles">Roles</label>
+                    <div>
+                        <select class="form-select form-control select2 w-100" name="roles" id="roles" multiple>
+                            <% for(let item of (guildData?.pings?.filter(x=> roles?.find(role => role.id === x.roleId)) || [])) { %>
+                                    <option selected="selected" value="<%= item.roleId %>">
+                                        <%= item.name %>
+                                    </option>
+                                    <% } %>
+
+                                        <% for(let item of roles || []) { %>
+                                            <% if(guildData?.pings?.find(x=> x.roleId === item.id)) continue %>
+                                                    <option value="<%= item.id %>">
+                                                        <%= item.name %>
+                                                    </option>
+                                                    <% } %>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group mt-3">
+                    <label class="theme-text" style="--this-text-opacity: .8;" for="cooldown-left">Cooldown Left</label>
+                    <div class="input-group mb-3">
+                        <input disabled value="<%= guildData.cooldownLeft && (guildData.cooldownLeft>
+                                            Date.now())? prettyMilliseconds(guildData.cooldownLeft - Date.now(), {
+                                            secondsDecimalDigits: 0 }): " 0" %>" type="text" class="form-control"
+                        name="cooldown-left"
+                        id="cooldown-left">
+                        <div class="input-group-append">
+                            <button onclick="$('input#cooldown-left')[0].value = '0'" style="margin-left: 6px; background-color:#0d6efd; border: none; color: white;"
+                                class="btn btn-info" type="button" id="button-addon2">Reset</button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group mt-3">
+                    <label class="theme-text" style="--this-text-opacity: .8;" for="blacklisted">Blacklisted</label>
+                    <div class="form-check form-switch">
+                        <% if(guildData?.blacklisted==="true" || guildData?.blacklisted===true) { %>
+                            <input checked class="form-check-input" type="checkbox" role="switch" id="blacklisted">
+                            <% } else { %>
+                                <input class="form-check-input" type="checkbox" role="switch" id="blacklisted">
+                                <% } %>
+                    </div>
+                </div>
+
+                <div class="form-group mt-3">
+                    <label class="theme-text" style="--this-text-opacity: .8;" for="blacklisted">Remove Partner</label>
+                    <div class="form-check">
+                        <input name="delete" id="delete" class="form-check-input" type="checkbox" id="flexCheckChecked">
+                        <label class="form-check-label" for="flexCheckChecked">
+                            Do you want to remove server from partner?
+                        </label>
+                    </div>
+                </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger py-1 px-4" data-bs-dismiss="modal">Close</button>
+            <button type="button" onclick="submit('<%= guildData.guildId %>' , '<%= guildData.partnerGuildId %>')"
+                class="btn btn-outline-primary py-1 px-4">Save</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/head'); %>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.0/css/all.css">
+</head>
+
+
+<body data-theme="light">
+    <header>
+        <%- include('../partials/header'); %>
+    </header>
+
+    <main>
+        <div class="col site-header">
+            <p class="text-center display-2 mb-0 theme-text-logo" style="font-weight: 600;">DEF BOT</p>
+            <p class="text-center display-6 theme-text" style="font-weight: 400;">A bot for dank memer heist utilities</p>
+            <div class="d-flex flex-lg-row flex-md-row justify-content-center align-items-center">
+                <a href="<%=invite_link%>" class="btn btn-primary mx-2 px-5 py-2">Invite Bot</a>
+                <a href="https://discord.gg/ZksC3Dceet" class="btn btn-success mx-2 px-5 py-2">Get Support</a>
+                <!-- <a href="" class="button button-purple mx-1">Dashboard</a> -->
+            </div>
+        </div>
+
+        <div class="col features">
+            <div class="container">
+                <div class="row g-0">
+                    <div class="col-lg-12 col-sm-12 feature">
+                        <section>
+                            <div class="text">
+                                <h1 class="mb-1">Heist advertisement feature</h1>
+                                <p class="theme-text" style="--this-text-opacity: .5;">Def has a newbie friendly heist advertisement feature which utilizes buttons for easy posting! allowing you to create custom heist advertisements and post them in hundreds of servers in a few seconds.</p>
+                            </div>
+                            <img src="imgs/postheist.png" class="img-fluid rounded shadow" alt="feature">
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col features">
+            <div class="container">
+                <div class="row g-0">
+                    <div class="col-lg-12 col-sm-12 feature order-opposite">
+                        <section>
+                            <div class="text">
+                                <h1 class="mb-1">Webhook heist system</h1>
+                                <p class="theme-text" style="--this-text-opacity: .5;">Def's webhook system will allow you to add a webhook that will receive heists posts from most dank memer servers. This is an easy way to increase your server activity while gaining wealth in dank memer. </p>
+                            </div>
+                            <img src="imgs/webhook.png" class="img-fluid rounded shadow" alt="feature">
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <%- include('../partials/footer'); %>
+</body>
+
+</html>

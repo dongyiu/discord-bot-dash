@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/head'); %>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.0/css/all.css">
+        <script src="//unpkg.com/alpinejs" defer></script>
+        <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+        <!-- <script src="https://cdn.socket.io/socket.io-1.0.0.js"></script> -->
+
+        <!-- //cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js -->
+
+</head>
+
+
+<body data-theme="light">
+    <header>
+        <%- include('../partials/header'); %>
+    </header>
+    <center><p class="font-normal hover:text-pink-300 text-3xl p-3">Most recent heists</p></center>
+    
+    <main class="container mx-auto px-6 md:px-12 justify-center relative z-10 flex items-center py-20 xl:py-35">
+        <!-- x-data="{ topHeist : myData() }" -->
+        <div id="test" >
+            <% if(!topHeist.length) { %>
+                <div class="hover:text-pink-300" id="noheist" style="text-align: center;margin-top: 10vw;">
+                    No heists posted recently
+                </div>
+            <% } else { %> 
+                <% topHeist.map(a => { %>
+                <div id="<%= a.timeStamp %>" class="rounded-3xl overflow-hidden shadow-xl max-w-xs my-3 bg-gray-800">
+                    <img src="<%= a.banner %>" class="w-full" />
+                    <div class="flex justify-center -mt-8">
+                        <img src="<%= a.pfp %>"  class="rounded-full border-solid border-white border-2 -mt-3">		
+                    </div>
+                    <div class="text-center px-3 pb-6 pt-2">
+                        <h3 class="text-center text-white text-sm bold font-sans text-2xl "><%= a.name %></h3>
+                        <p class="text-center mt-2 font-sans font-light text-white">
+                            Amount : <%= a.amount %> <br>
+                            Time : <%= a.time %> <br>
+                            Channel : <a class="bg-indigo-600 hover:bg-indigo-700 hover:text-white" href="<%= a.channelLink %>">#<%= a.channelName %></a> <br>
+                            <!-- <% if(a.extrainfo != null) { %>Extra Info : <%= a.extrainfo %> <%}%> -->
+                        </p>
+                        <!-- <p class="mt-2 font-sans font-light text-white"><%= a.desc %></p> -->
+                    </div>
+                    <div class="flex justify-center pb-3 text-white">
+                        <div class="text-center">
+                            <a href="<%= a.inv %>">
+                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                                Join
+                            </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <% }) %>
+            <% } %>
+        </div>
+    </main>
+
+    <footer>
+        <%- include('../partials/footer'); %>
+    </footer>
+    
+</body>
+
+</html>
+<script src="https://cdn.tutorialjinni.com/humanize-duration/3.27.0/humanize-duration.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+<script src="http://107.152.41.246:8000/socket.io/socket.io.js"></script>
+<script defer>
+       
+        const socket = io("http://107.152.41.246:8000");
+        const pretty = humanizeDuration.humanizer({
+            language: 'en',
+            round: true,
+            largest: 1,
+            spacer: ' ',
+            delimiter: '',
+            conjunction: '',
+        });
+        socket.on('heist', text => {
+            const banner = text.banner
+            const pfp = text.pfp
+            const name = text.name
+            // const desc = text.desc
+            const inv = text.inv
+            const amount = text.amount
+            const time = text.time
+            const channelName = text.channelName
+            const channelLink = text.channelLink
+            const extrainfo = text.extrainfo
+            const timeStamp = text.timeStamp
+            $('#test').prepend(`<div id="${timeStamp}" class="rounded-3xl overflow-hidden shadow-xl max-w-xs my-3 bg-gray-800">
+                            <img src=${banner} class="w-full" />
+                            <div class="flex justify-center -mt-8">
+                                <img src=${pfp}  class="rounded-full border-solid border-white border-2 -mt-3">		
+                            </div>
+                            <div class=" px-3 pb-6 pt-2">
+                                <h3 class="text-center text-white text-sm bold font-sans text-2xl ">${name}</h3>
+                                <p class="text-center mt-2 font-sans font-light text-white">
+                                    Amount : ${amount} <br>
+                                    Time : ${time} <br>
+                                    Channel : <a class="bg-indigo-600 hover:bg-indigo-700 hover:text-white" href="${channelLink}">#${channelName}</a> <br>
+                                </p>
+                            </div>
+                            <div class="flex justify-center pb-3 text-white">
+                                <div class="text-center">
+                                    <a href=${inv}>
+                                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                                        Join
+                                    </button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>`)
+            $('#noheist').hide()
+        });
+        
+        const notyf = new Notyf({
+            duration: 1000,
+            position: {
+                x: 'right',
+                y: 'top',
+            },
+            types: [
+                {
+                type: 'warning',
+                background: '#4a4d49',
+                duration: 2000,
+                dismissible: true
+                }
+            ]
+            });
+        $( "body" ).on('click', '.rounded-3xl', function() {
+            const currDate = new Date(Number(this.id))
+            notyf.open({
+                type: 'warning',
+                message: `Posted at <b>${currDate.toDateString("en-US", {timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone})} ${currDate.toLocaleTimeString("en-US", {timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone})}</b> <br>${pretty(Date.now() - this.id, { round : true })} ago`
+            });
+        });
+</script>

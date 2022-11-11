@@ -1,0 +1,59 @@
+<nav class="navbar navbar-expand-lg shadow-sm">
+    <div class="container py-2">
+        <a class="navbar-brand me-4" href="/">
+            <p class="logo mb-0">DEF BOT</p>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="menu-item rounded m-1">
+                    <a class="menu-link" href="/commands">Commands</a>
+                </li>
+                <li class="menu-item rounded m-1">
+                    <a class="menu-link" href="https://discord.gg/ZksC3Dceet">Support Server</a>
+                </li>
+                <li class="menu-item rounded m-1">
+                    <a class="menu-link" href="https://www.patreon.com/join/notabC">Patreon</a>
+                </li>
+                <li class="menu-item rounded m-1">
+                    <a class="menu-link" href="/dashboard">Dashboard</a>
+                </li>
+                <li class="dropdown menu-item rounded m-1">
+                        <a id="menu-link" class="dropdown-toggle menu-link" data-bs-toggle="dropdown" aria-expanded="false">
+                            <p id="user-menu-text">Others</p>
+                        </a>
+                        <ul class="dropdown-menu shadow" id="user-menu-dropdown">
+                            <li><a class="dropdown-item theme-text" href="/appeal">Appeal</a></li>
+                            <li class="dropdown-divider"></li>
+                            <li><a class="dropdown-item theme-text" href="invite">Invite Bot</a></li>
+                            <li class="dropdown-divider"></li>
+                            <li><a class="dropdown-item theme-text" href="/heists">View Heists</a></li>
+                        </ul>
+                </li>
+            </ul>
+            <div>
+                <% if(user) { %>
+                    <div class="dropdown">
+                        <a id="user-menu-link" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img id="user-menu"
+                                src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>"
+                                alt="">
+                            <p id="user-menu-text"><%= user.username %></p>
+                        </a>
+                        <ul class="dropdown-menu shadow" id="user-menu-dropdown">
+                            <li><a class="dropdown-item theme-text" href="/dashboard">My servers</a></li>
+                            <li class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="/logout"><i class="fas fa-sign-out-alt me-1"></i> Logout</a></li>
+                        </ul>
+                    </div>
+                <% } else { %>
+                    <button onClick="location.href = '/login'" class="btn btn-primary hover text-white shadow-sm">Login</button>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</nav>

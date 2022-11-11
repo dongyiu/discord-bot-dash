@@ -1,0 +1,254 @@
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2/dist/tailwind.min.css" rel="stylesheet" type="text/css" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/index.min.css" />
+<style>
+
+.toggle-path {
+    transition: background 0.3s ease-in-out;
+}
+.toggle-circle {
+    top: 0.2rem;
+    left: 0.25rem;
+    transition: all 0.3s ease-in-out;
+}
+input:checked ~ .toggle-circle {
+    transform: translateX(100%);
+}
+input:checked ~ .toggle-path {
+    background-color:#81E6D9;
+}
+</style>
+<div class="m-auto" x-data="heistEvent()">
+    <%- include('../modals/heistEvents'); %>
+    <%- include('../modals/heistEventsDelete'); %>
+    <%- include('../modals/heistEventsView'); %>
+
+    <template x-if="selectedEvent == null">
+        <p class="text-center text-3xl p-4 m-4">Please Select an Event !</p>
+    </template>
+    <template x-if="selectedEvent != null">
+        <p class="text-center text-3xl p-4 m-4 animate-pulse" x-text="selectedEvent"></p>
+    </template>
+    <div class="overflow-y-scroll p-2 h-14 m-4 justify-center items-center">
+        <div @click="createEvent" type="button" class="animate-pulse m-2 inline-block px-3 py-2.5 bg-green-200 text-gray-800 font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-400 hover:shadow-lg focus:bg-green-400 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-400 active:shadow-lg transition duration-150 ease-in-out">+</div>
+        <template x-for="(item, index) in eventList">
+            <div @dblclick="deleteEvent(item)" @click="select(item)" x-text="item" type="button" class="animate-pulse m-2 inline-block px-6 py-2.5 bg-red-200 text-gray-800 font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-red-400 hover:shadow-lg focus:bg-red-400 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-400 active:shadow-lg transition duration-150 ease-in-out"></div>
+        </template>
+    </div>
+    <!-- <template x-if="selectedEvent == null">
+        <p class="text-center text-3xl p-4 m-4">Please Select an Event !</p>
+    </template> -->
+    <template x-if="selectedEvent != null">
+        
+        <div class="theme-text">
+            <hr>
+            <!-- This is an example component -->
+            <div class="flex justify-center pt-6">
+                <label for="toogleButton" class="flex items-center cursor-pointer">
+                <div class="p-2 text-2xl text-center">Public Server</div>
+            <!-- toggle -->
+            <div class="relative">
+                <input x-model="checkPublicServer" id="toogleButton" type="checkbox" class="hidden" />
+                <!-- path -->
+                <div
+                class="toggle-path bg-gray-200 w-9 h-5 rounded-full shadow-inner"
+                ></div>
+                <!-- crcle -->
+                <div
+                class="toggle-circle absolute w-3.5 h-3.5 bg-white rounded-full shadow inset-y-0 left-0"
+                ></div>
+            </div>
+            </label>
+            </div>
+            <div class="text-center m-2"> By turning this on, your server would be visible <a class="text-blue-500 hover:text-blue-600" href="http://defbot.xyz/partnersearch">here</a>. </div>
+            <div class="flex flex-row-reverse p-3">
+                <div class="flex-initial pl-3">
+                   <button onclick="saveData()" type="button" class="flex items-center px-5 py-2.5 font-medium tracking-wide text-white capitalize   bg-black rounded-md hover:bg-gray-800  focus:outline-none focus:bg-gray-900  transition duration-300 transform active:scale-95 ease-in-out">
+                      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF">
+                         <path d="M0 0h24v24H0V0z" fill="none"></path>
+                         <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
+                         <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zm-7-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM6 6h9v4H6z"></path>
+                      </svg>
+                      <span class="pl-2 mx-1">Save</span>
+                   </button>
+                </div>
+            </div>
+
+            <hr>
+            <h4 class="p-4 m-2 text-2xl text-center" > Partnership Manager </h4>
+            <div class="grid grid-cols-3 m-6 gap-2 text-left">
+                <div class="p-3"><i class="fa fa-plus text-green-200 text-2xl gap-2 hover:animate-bounce animate-pulse hover:text-green-400" ></i></div>
+                <div class="p-3">Role Name</div>
+                <div class="p-3">Amount</div>
+                <div class="p-3"><i class="fa fa-trash text-red-300 text-2xl gap-2 hover:animate-bounce animate-pulse hover:text-red-500" ></i></div>
+                <div class="p-3">@here</div>
+                <div class="p-3">> 500 members</div>
+            </div>
+            <div class="flex flex-row-reverse p-3">
+                <div class="flex-initial pl-3">
+                   <button onclick="saveData()" type="button" class="flex items-center px-5 py-2.5 font-medium tracking-wide text-white capitalize   bg-black rounded-md hover:bg-gray-800  focus:outline-none focus:bg-gray-900  transition duration-300 transform active:scale-95 ease-in-out">
+                      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF">
+                         <path d="M0 0h24v24H0V0z" fill="none"></path>
+                         <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
+                         <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zm-7-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM6 6h9v4H6z"></path>
+                      </svg>
+                      <span class="pl-2 mx-1">Save</span>
+                   </button>
+                </div>
+             </div>
+            <hr>
+
+            <h4 class="p-4 m-2 text-2xl text-center" > Partner List </h4>
+            
+            <div class="flex justify-center">
+                <div class="mb-3 xl:w-142">
+                  <div class="input-group relative flex flex-wrap items-stretch w-full mb-4">
+                    <button class="btn inline-block px-3 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700  focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out flex items-center" type="button" id="button-addon2">
+                      Add Partner
+                    </button>
+                    <input x-model="searchBar" type="search" class="form-control relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Search" aria-label="Search" aria-describedby="button-addon2">
+                    <select x-model="filter" id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option value="all">all</option>
+                        <option value="pending">pending</option>
+                        <option value="accepted">accepted</option>
+                        <option value="rejected">rejected</option>
+                      </select>
+                  </div>
+                </div>
+            </div>
+
+            <template x-for="(item, index) in partnerList" class="mt-4 grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4">
+                <div x-show="searchResult(item)" class="border-1 border-gray-700 p-3 flex m-2 rounded-lg hover:bg-blue-800" x-data="{dropdown : false}">
+                    <div class="flex w-2/3">
+                        <img class="my-auto text-2xl items-center rounded-full h-14 w-14 hover:border-2 hover:border-red-300 hover:animate-bounce" 
+                        src="<%= '/imgs/def.png' %>" alt="">
+                        <p class="my-auto px-3 items-center">
+                          <span class="" x-text="item.name">Dank Trades</span> 
+                          <br> 
+                          <span class="text-xs" x-text="Number(item.memberCount).toLocaleString()">3,000 members</span>
+                          <span class="text-xs">members</span>
+                        </p>
+                    </div>
+                    <div class="my-auto justify-end w-1/3 text-right">
+                        <button x-show="item.status == 'pending'" class="bg-yellow-500 hover:bg-yellow-700 text-white text-xs px-6 py-2.5 rounded-full">
+                            PENDING
+                        </button>
+                        <button x-show="item.status == 'accepted'" class="bg-green-500 hover:bg-green-700 text-white text-xs px-6 py-2.5 rounded-full">
+                            ACCEPTED
+                        </button>
+                        <button x-show="item.status == 'rejected'" class="bg-red-500 hover:bg-red-700 text-white text-xs px-6 py-2.5 rounded-full">
+                            REJECTED
+                        </button>
+
+                        <i @click="partnersOptionsRemove(item)" x-show="dropdown == true" class="hover:animate-bounce animate-pulse fa fa-trash text-red-300 hover:text-red-500 text-2xl mx-2" ></i>
+                        <i @click="partnersOptionsView(item)" x-show="dropdown == true" class="hover:animate-bounce animate-pulse fa fa-eye text-green-200 hover:text-green-400 text-2xl mx-2" ></i>
+                        <i @click="dropdown = !dropdown" class="animate-pulse hover:text-red-300 p-2 fa-solid fa-ellipsis-vertical text-right text-2xl mx-2"></i>
+                    </div>
+                    <!-- <div>
+                        <ul x-show="dropdown == true" class="absolute right-4 mr-10 py-32 menu shadow bg-base-100 rounded-box w-36 bg-gray-700 p-2 rounded-lg">
+                            <li class="hover:bg-gray-900" @click="partnersOptionsView(item)"><a>View</a></li>
+                            <li class="hover:bg-gray-900" @click="partnersOptionsRemove(item)"><a>Remove</a></li>
+                        </ul>
+                    </div> -->
+                </div>
+            </template>
+            <div class="flex flex-row-reverse p-3">
+                <div class="flex-initial pl-3">
+                   <button onclick="saveData()" type="button" class="flex items-center px-5 py-2.5 font-medium tracking-wide text-white capitalize   bg-black rounded-md hover:bg-gray-800  focus:outline-none focus:bg-gray-900  transition duration-300 transform active:scale-95 ease-in-out">
+                      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF">
+                         <path d="M0 0h24v24H0V0z" fill="none"></path>
+                         <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
+                         <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zm-7-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM6 6h9v4H6z"></path>
+                      </svg>
+                      <span class="pl-2 mx-1">Save</span>
+                   </button>
+                </div>
+            </div>
+
+        </div>
+    </template>
+</div>
+
+<script defer src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/index.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+<script>
+    const notyf = new Notyf();
+    function heistEvent() {
+        return {
+            selectedEvent: null ,
+            searchBar: null,
+            filter: 'all',
+            eventList: ['1y event', '2y event'],
+            partnerList:[{ name : 'Dank Trades', memberCount : 3000, id: "719180744311701505", status: "pending" }, { name : 'Def ', memberCount : 30000, id: "826391353277284362", status: "accepted" },  { name : 'Def ', memberCount : 30000, id: "826391353277284362", status: "rejected" }],
+            deleteName: 'event',
+            viewing: null,
+            searchResult(item) {
+                const searchBar = this.searchBar
+                if(!item) return
+                if((searchBar?.length || 0) == 0 && this.filter == "all") return true
+                if((searchBar?.length || 0) != 0 && this.filter == "all") {
+                    return ( item.name.toLowerCase().includes(searchBar.toLowerCase()) || 
+                        item.id.includes(searchBar.toLowerCase()) )
+                }
+                else if((searchBar?.length || 0) != 0 && this.filter != "all") {
+                    return (( item.name.toLowerCase().includes(searchBar.toLowerCase()) || 
+                        item.id.includes(searchBar.toLowerCase()) ) && item.status == this.filter)
+                }
+                else if((searchBar?.length || 0) == 0 && this.filter != "all") {
+                    return item.status == this.filter
+                }
+            },
+            getEvents() {
+                let list = this.eventList
+                for(let i = 0; i < 2 ; i ++) {
+                    list.push(`${i+1}y event`)
+                }
+                this.eventList = list
+                return list
+            },
+            select(name) {
+                if(this.selectedEvent == name) {
+                    this.selectedEvent = null
+                } else { this.selectedEvent = name }
+            },
+            create(name) {
+                if(this.eventList.map(a => a.toLocaleLowerCase()).includes(name.toLowerCase())) {
+                    return notyf.error('You cannot have the same event name!')
+                }
+                else {
+                    this.eventList.push(name)
+                    notyf.success(`Added the event : ${name}`)
+                    return $('#staticBackdrop').modal('toggle');
+                }
+            },
+            createEvent() {
+                console.log($('#staticBackdrop'))
+                return $('#staticBackdrop').modal('toggle');
+            },
+            async deleteEvent(name) {
+                this.deleteName = name
+                $('#deleteEventForm').modal('toggle');
+            },
+            confirmDelete() {
+                this.eventList = this.eventList.filter(a => a != this.deleteName)
+                notyf.success(`Deleted the event : ${this.deleteName}`)
+                this.deleteName = null
+                this.selectedEvent = null
+                return $('#deleteEventForm').modal('toggle');
+            },
+            partnersOptionsRemove(item) {
+                notyf.success(`Removed the partner : ${item.name}`)
+            },
+            partnersOptionsView(item) {
+                this.viewing = item
+                $('#exampleModalScrollable').modal('toggle');
+                // notyf.success(`Viewed the partner : ${item.name}`)
+            },
+            checkPublicServer() {
+                return false
+            }
+        }
+    }
+</script>

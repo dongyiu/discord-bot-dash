@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/head'); %>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.0/css/all.css">
+</head>
+
+
+<body data-theme="light">
+    <header>
+        <%- include('../partials/header'); %>
+    </header>
+
+    <main>
+        <div class="container guild-container">
+            <h1 class="theme-text text-center mb-3" style="font-weight: 500;">CHOOSE THE SERVER</h1>
+            <div class="guild-list">
+                <% for(let guild of user.guilds.sort(function(a, b) {
+                    if(!bot.guilds.cache.some(x => x.id === a.id)) return 1;
+                    else if(!bot.guilds.cache.some(x => x.id === b.id)) return -1;  
+                }))  { %>
+                    <% const perms = new Permissions(guild.permissions.toString()); %>
+                    <% if(!perms.toArray().includes("MANAGE_GUILD")) continue; %>
+                    
+                <div class="guild-list-item">
+                    <img src="<%= guild.icon ? `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}` : '/imgs/def.png' %>" alt="">
+                    <span class="theme-text"><%= guild.name %></span>
+                    <% if(bot.guilds.cache.some(x => x.id === guild.id)) {%>
+                        <button onclick="location.href = '/dashboard/<%= guild.id %>/heistSettings'" class="btn btn-sm btn-success mt-1">Settings</button>
+                    <% } else { %>
+                        <button onclick="location.href = '<%= invite_link %>'" class="btn btn-sm btn-primary mt-1">Invite me</button>
+                    <% } %>
+                </div>
+              <% } %>
+            </div>
+        </div>
+    </main>
+
+    <%- include('../partials/footer'); %>
+</body>
+
+</html>

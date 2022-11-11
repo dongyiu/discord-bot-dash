@@ -1,0 +1,40 @@
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+
+<div class="guild-card rounded m-1">
+    <button data-bs-toggle="modal" data-bs-target="#addServer" id="hidden-button">
+        <i class="fas fa-plus-square"></i>
+    </button>
+</div>
+
+<!-- Modal -->
+<div class="modal fade theme-modal" id="addServer" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h4 class="theme-text" style="font-weight: 400;">Add server</h4>
+                <div class="form-group mt-3">
+                    <label class="theme-text" style="--this-text-opacity: .8;" for="default_cooldown">Server ID</label>
+                    <input class="form-control" type="number" placeholder="Here goes the legendry ID" name="server_id" id="server_id">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger py-1 px-4" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" onclick="addServer('<%= guild_id %>')" class="btn btn-outline-primary py-1 px-4">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+
+<style>
+    .fa-plus-square {
+        font-size: 85px
+    }
+    
+    #hidden-button {
+        background-color: transparent;
+        border: none;
+        color: #9fadbd;
+    }
+</style>

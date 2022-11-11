@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/head'); %>
+        <link rel="stylesheet" href="./css/commands.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+        <style>
+            body {
+    background: #36393f;
+
+    font-family: 'Fira Sans', sans-serif;
+}
+
+.jumbotron {
+    background: #2f3136;
+}
+
+h1 {
+    color: white;
+}
+
+h2, p {
+    color: #b9bbbe;
+}
+
+a {
+    color: hsl(197,100%,47.8%);
+}
+
+button, a.btn {
+    color: white !important;
+    background-color: hsl(235,85.6%,64.7%) !important;
+    border: none !important;
+    box-shadow: none !important;
+
+    transition: background-color .17s ease;
+}
+
+button:hover, a.btn:hover {
+    background-color: hsl(235,51.4%,52.4%) !important;
+}
+
+button:active, a.btn:active {
+    background-color: hsl(235,46.7%,44.1%) !important;
+}
+
+label {
+    color: #8e9297;
+}
+
+label.radio {
+    position: relative;
+    display: block;
+    padding: 10px;
+
+    border-radius: 4px;
+    background-color: #2f3136;
+    color: #b9bbbe;
+
+    margin-bottom: 8px;
+
+    cursor: pointer;
+}
+
+label.radio:hover {
+    background-color: rgba(79,84,92,0.16);
+    color: #dcddde;
+}
+
+label.radio.checked {
+    background-color: #202225;
+    color: #ffffff;
+}
+
+label.radio > span:not(.checkmark) {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+
+    margin-left: 32px;
+}
+
+label.radio > input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+label.radio > .checkmark {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    height: 20px;
+    width: 20px;
+    padding: 3px;
+
+    border-radius: 50%;
+    border-width: 2px;
+    border-color: #b9bbbe;
+    border-style: solid;
+}
+
+label.radio:hover > .checkmark {
+    border-color: #dcddde;
+}
+
+label.radio.checked > .checkmark {
+    border-color: #ffffff;
+}
+
+label.radio > .checkmark > span {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+label.radio.checked > .checkmark > span {
+    background-color: hsl(235,86.1%,77.5%);
+}
+
+select {
+    background-color: #2f3136 !important;
+
+    border: 1px solid #202225 !important;
+    cursor: pointer !important;
+    color: #dcddde !important;
+    border-radius: 4px !important;
+    font-weight: 500 !important;
+
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+select:invalid {
+    color: #72767d !important;
+}
+
+option {
+    color: #b9bbbe;
+}
+
+textarea {
+    color: #dcddde !important;
+
+    background: rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid rgba(0, 0, 0, 0.3) !important;
+
+    outline: none !important;
+    box-shadow: none !important;
+
+    transition: border-color .2s ease-in-out;
+    resize: none;
+
+    overflow-y: hidden;
+}
+
+textarea:hover {
+    border-color: #040405 !important;
+}
+
+textarea:focus {
+    border-color: hsl(197,100%,47.8%) !important;
+}
+
+.textInput {
+    position: relative;
+}
+
+.remainingLength {
+    position: absolute;
+    bottom: 12px;
+    right: 14px;
+    font-size: 12px;
+    font-family: monospace;
+    pointer-events: none;
+    color: #72767d;
+}
+
+.lowOnSpace {
+    color: #f36c6c;
+}
+
+#username {
+    color: white;
+}
+        </style>
+</head>
+
+
+<body data-theme="light">
+    <header>
+        <%- include('../partials/header'); %>
+    </header>
+
+    <main>
+        <div>
+            <!-- HEADING -->
+            <center><h1> Def appeal </h1></center>
+        </div>
+
+        <div class="container mb-3">
+            <form class="mt-3" action="/appeal" method="POST" id="appeal_Form" name="appeal">
+                <input type="hidden" id="token" name="token">
+                <div class="form-group">
+                    <label for="banReason">What are you appealing, a bot ban, server ban, support server ban or global ban ? For server ban input your server id only. </label>
+                    <div class="textInput">
+                        <textarea class="form-control" id="banType" name="banType" required maxlength="18" placeholder="e.g. bot ban"></textarea>
+                        <div class="remainingLength"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="appealText">Why were you banned?</label>
+                    <div class="textInput">
+                        <textarea class="form-control" id="banReason" name="banReason" required maxlength="1024"></textarea>
+                        <div class="remainingLength"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="appealText">Why you think you should be accepted?</label>
+                    <div class="textInput">
+                        <textarea class="form-control" id="appealText" name="appealText" required maxlength="1024"></textarea>
+                        <div class="remainingLength"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="futureActions">What you will do to prevent a reoccurrence of the behaviour that led up to your ban?</label>
+                    <div class="textInput">
+                        <textarea class="form-control" id="futureActions" name="futureActions" required maxlength="1024"></textarea>
+                        <div class="remainingLength"></div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-sm btn-outline-primary px-3 mt-2" 
+                                        onclick="submitAppeal('<%= banned %>', '<%= reported %>', '<%= serverBan %>', '<%= supportBan %>')">Submit</button>
+                
+            </form>
+        </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+    <script>
+
+        [...document.getElementsByClassName("textInput")].forEach(div => {
+            const textarea = div.firstElementChild;
+
+            const updateTextarea = () => {
+                textarea.style.height = "auto";
+                textarea.style.height = `${textarea.scrollHeight}px`;
+
+                const charactersRemaining = textarea.maxLength - textarea.textLength;
+                const remainingLength = div.lastElementChild;
+                if (charactersRemaining <= 100) {
+                    remainingLength.classList.add("lowOnSpace");
+                } else {
+                    remainingLength.classList.remove("lowOnSpace");
+                }
+                remainingLength.textContent = charactersRemaining;
+            }
+
+            updateTextarea();
+            textarea.oninput = updateTextarea;
+        })
+
+    </script>
+
+    <%- include('../partials/footer'); %>
+</body>
+
+
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</html>

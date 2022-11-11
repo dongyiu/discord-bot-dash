@@ -1,0 +1,299 @@
+:root {
+    --bs-primary-rgb: 13, 110, 253;
+    --bs-secondary-rgb: 108, 117, 125;
+    --bs-success-rgb: 25, 135, 84;
+    --bs-info-rgb: 13, 202, 240;
+    --bs-warning-rgb: 255, 193, 7;
+    --bs-danger-rgb: 220, 53, 69;
+    --bs-light-rgb: 248, 249, 250;
+    --bs-dark-rgb: 33, 37, 41;
+    --dark-background: 11, 22, 34;
+    --dark-background2: 21, 31, 46;
+    --dark-shadow-color: 6, 13, 34;
+    --dark-text-color: 159, 173, 189;
+    --dark-text-lighter: 133, 150, 165;
+    --dark-extra-dark: 59, 174, 236;
+    --light-background: 229, 235, 241;
+    --light-background2: 251, 251, 251;
+    --light-shadow-color: 6, 13, 34;
+    --light-text-color: 38, 52, 63;
+    --light-extra-dark: 59, 174, 236;
+}
+
+body[data-theme='light'] {
+    background-color: rgb(var(--light-background2));
+    color: rgb(var(--bs-dark-rgb));
+}
+
+body[data-theme='light'] .theme-text {
+    --this-text-opacity: 1;
+    color: rgba(var(--light-text-color), var(--this-text-opacity));
+}
+
+.site-header {
+    padding-top: 13rem;
+    padding-bottom: 13rem;
+}
+
+body[data-theme='light'] .features {
+    background-color: rgb(var(--light-background), .2);
+    padding: .400rem 2rem;
+}
+
+.feature {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: .400rem 2rem;
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+}
+
+body[data-theme='light'] .navbar {
+    background-color: rgb(var(--light-background));
+}
+
+body[data-theme='light'] .menu-item {
+    transition: background-color 100ms;
+}
+
+body[data-theme='light'] .menu-link {
+    font-weight: 400;
+    display: block;
+    padding: .25rem .5rem;
+    color: rgb(var(--dark-text-color));
+    text-decoration: none;
+    transition: color ease-in-out 250ms;
+}
+
+body[data-theme='light'] .menu-active.active .menu-link,
+body[data-theme='light'] .menu-link:hover {
+    display: block;
+    color: rgb(var(--dark-extra-dark));
+    text-decoration: none;
+}
+
+body[data-theme='light'] .logo {
+    margin-bottom: 0;
+    font-weight: 500;
+    font-size: 1.5rem;
+    color: rgb(var(--dark-extra-dark));
+    text-decoration: none;
+}
+
+body[data-theme='light'] .site-footer {
+    background-color: rgb(var(--light-background));
+}
+
+body[data-theme='light'] .site-footer hr {
+    color: rgb(var(--light-background));
+}
+
+body[data-theme='light'] a.footer-icon-link,
+body[data-theme='light'] a.footer-icon-link i {
+    color: rgb(var(--light-text-color));
+    text-decoration: none;
+    transition: color 10ms ease-in-out;
+}
+
+body[data-theme='light'] a.footer-icon-link:hover i {
+    color: rgb(var(--light-extra-dark));
+}
+
+body[data-theme='light'] a.footer-link {
+    color: rgb(var(--bs-dark-rgb), .8);
+    font-weight: 300;
+    display: block;
+    padding: .2rem .2rem .2rem 0rem;
+    margin: .2rem .2rem .2rem 0rem;
+    text-decoration: none;
+    transition: color 100ms ease-in-out;
+}
+
+body[data-theme='light'] a.footer-link:hover {
+    color: rgb(var(--bs-primary-rgb));
+}
+
+body[data-theme='light'] p.heading {
+    font-weight: 500;
+    margin-bottom: .4rem;
+    font-size: 1.2rem;
+    color: rgb(var(--light-text-color));
+}
+
+body[data-theme='light'] button#theme-change {
+    padding: .400rem 1rem;
+    border: 1px solid rgba(var(--bs-dark-rgb), .2);
+    background-color: rgba(var(--light-background2), .8);
+    color: rgba(var(--bs-dark-rgb), .7);
+    transition: all ease-in-out 200ms;
+}
+
+body[data-theme='light'] button#theme-change:hover {
+    border: 1px solid rgba(var(--bs-dark-rgb), .3);
+    background-color: rgb(var(--light-background2));
+    color: rgb(var(--bs-dark-rgb));
+    outline: solid 2px rgba(var(--bs-dark-rgb), .2);
+}
+
+body[data-theme='light'] button#theme-change:focus {
+    border: 1px solid rgba(var(--bs-dark-rgb), .3);
+    background-color: rgb(var(--light-background2));
+    color: rgb(var(--bs-dark-rgb));
+    outline: solid 2px rgba(var(--bs-dark-rgb), .2);
+    box-shadow: none;
+}
+
+body[data-theme='light'] #category a {
+    background-color: rgb(var(--light-background));
+    color: rgb(var(--bs-dark-rgb));
+}
+
+body[data-theme='light'] #category a.active {
+    background-color: rgb(var(--dark-extra-dark));
+    color: white;
+}
+
+body[data-theme='light'] .accordion-label {
+    background: rgb(var(--light-background));
+    color: rgb(var(--bs-dark-rgb));
+}
+
+body[data-theme='light'] .accordion-label:hover {
+    background: rgb(var(--dark-extra-dark));
+}
+
+body[data-theme='light'] input:checked+.accordion-label {
+    background: rgb(var(--dark-extra-dark));
+    color: white;
+}
+
+body[data-theme='light'] .accordion-content p {
+    color: #112b49;
+}
+
+body[data-theme='light'] .accordion-content {
+    background: rgb(var(--light-background));
+}
+
+body[data-theme='light'] #user-menu-link {
+    color: rgb(var(--light-text-color)) !important;
+}
+
+body[data-theme='light'] #user-menu-dropdown .dropdown-item:hover,
+body[data-theme='light'] #user-menu-dropdown .dropdown-item:focus {
+    background-color: rgba(var(--light-text-color), 0.1);
+}
+
+body[data-theme='light'] #user-menu-dropdown .dropdown-divider {
+    background-color: rgba(var(--light-text-color), 0.2);
+}
+
+body[data-theme='light'] #user-menu-dropdown {
+    border: 1px solid rgba(var(--light-text-color), 0.2);
+    background-color: rgb(var(--light-background));
+}
+
+
+/** -------------------------------------- **/
+
+body[data-theme='light'] .form-control {
+    background-color: rgb(var(--light-background));
+    color: rgb(var(--light-text-color));
+    border-color: rgba(var(--light-text-color), .3);
+}
+
+body[data-theme='light'] .form-control:focus {
+    box-shadow: 0 0 0 0.25rem rgba(var(--light-text-color), .3) !important;
+}
+
+body[data-theme='light'] .form-select {
+    background-color: rgb(var(--light-background));
+    color: rgb(var(--light-text-color));
+    border-color: rgba(var(--light-text-color), .3);
+}
+
+body[data-theme='light'] .form-select:focus {
+    box-shadow: 0 0 0 0.25rem rgba(var(--light-text-color), .3) !important;
+}
+
+body[data-theme='light'] .form-switch .form-check-input {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%28159, 173, 189, 0.3%29'/%3e%3c/svg%3e");
+    background-color: rgb(var(--light-background));
+    border-color: rgba(var(--light-text-color), .3);
+    transition: all ease-in-out 250ms;
+}
+
+body[data-theme='light'] .form-switch .form-check-input:checked {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgb%2859, 174, 236%29'/%3e%3c/svg%3e");
+    border-color: rgba(var(--light-extra-dark));
+}
+
+body[data-theme='light'] .form-switch .form-check-input:focus {
+    box-shadow: 0 0 0 0.25rem rgba(var(--light-text-color), .3) !important;
+}
+
+body[data-theme='light'] .select2-selection {
+    background-color: rgb(var(--light-background)) !important;
+    border-color: rgba(var(--light-text-color), .3) !important;
+    color: rgb(var(--light-text-color)) !important;
+}
+
+body[data-theme='light'] .select2-selection[aria-expanded='true'] {
+    background-color: rgb(var(--light-background)) !important;
+    border-color: rgba(var(--light-text-color), .3) !important;
+    color: rgb(var(--light-text-color)) !important;
+}
+
+body[data-theme='light'] .select2-results__option {
+    background-color: rgb(var(--light-background));
+    color: rgb(var(--light-text-color));
+}
+
+body[data-theme='light'] .select2-selection__choice__remove {
+    color: rgb(var(--light-text-color)) !important;
+}
+
+body[data-theme='light'] .select2-selection__choice__remove:hover {
+    background-color: transparent !important;
+    color: rgb(var(--light-text-lighter)) !important;
+}
+
+body[data-theme='light'] .select2-selection__choice {
+    border-color: rgba(var(--light-text-color), .2) !important;
+    background-color: rgba(var(--light-background2)) !important;
+    color: rgb(var(--light-text-color)) !important;
+}
+
+body[data-theme='light'] .theme-modal {
+    background-color: rgba(var(--light-background), .2);
+}
+
+body[data-theme='light'] .theme-modal .modal-content {
+    border-color: rgba(var(--light-extra-dark), .3);
+    background-color: rgb(var(--light-background));
+}
+
+body[data-theme='light'] .theme-modal .modal-footer {
+    border-color: rgba(var(--light-extra-dark), .3);
+}
+
+
+/** Guild List Section -------------------------------------------------------------------------------**/
+
+body[data-theme='light'] .guild-list-item {
+    background-color: rgba(var(--light-background), 6);
+}
+
+body[data-theme='light'] .guild-card {
+    background-color: rgba(var(--light-background), .3);
+    border: 1px solid rgba(var(--light-extra-dark), .2);
+}
+
+body[data-theme='light'] .guild-card p {
+    color: rgba(var(--light-text-color), .7);
+}
+
+body[data-theme='light'] .guild-card p.guild-title {
+    color: rgb(var(--light-text-color)) !important;
+}

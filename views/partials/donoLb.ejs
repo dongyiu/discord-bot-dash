@@ -1,0 +1,166 @@
+<% 
+  const guild= bot.guilds.cache.find(x=> x.id === guild_id)
+  let topDono = []
+  dono.sort((a,b) => Number(a.donations) - Number(b.donations)).reverse().map((a, x) => {
+    const user = members.get(a.userId)
+    topDono.push({
+      id: user?.id || a.userId,
+      employeeName: user?.user?.username || "-",
+      employeeSalary: a.donations ,
+      employeeAge: x+1,
+      profileImage: user?.user?.avatarURL() || '/imgs/def.png',
+    })
+  })
+%>
+<script defer src="https://unpkg.com/alpinejs@3.9.1/dist/cdn.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+
+<script defer >
+const topDono = JSON.parse(`<%- JSON.stringify(topDono) %>`)
+var sourceData = topDono     // console.log(sourceData)
+function copy(element) {
+        var $temp = $("<input>");
+        $("body").append($temp);
+        $temp.val(element).select();
+        document.execCommand("copy");
+        $temp.remove();
+}
+  function loadEmployees() {
+    return {
+      search: "",
+      pageNumber: 0,
+      size: 5,
+      total: "",
+      myForData: sourceData,
+
+      get filteredEmployees() {
+        const start = this.pageNumber * this.size,
+          end = start + this.size;
+
+        if (this.search === "") {
+          this.total = this.myForData.length;
+          return this.myForData.slice(start, end);
+        }
+
+        //Return the total results of the filters
+        this.total = this.myForData.filter((item) => {
+            if(item.employeeName.toLowerCase().includes(this.search.toLowerCase())) {
+              return item
+            }
+            if(item.id.toLowerCase() == this.search.toLowerCase()) {
+              return item
+            }
+          }).length;
+
+        //Return the filtered data
+        return this.myForData
+          .filter((item) => {
+            if(item.employeeName.toLowerCase().includes(this.search.toLowerCase())) {
+              return item
+            }
+            if(item.id.toLowerCase() == this.search.toLowerCase()) {
+              return item
+            }
+          })
+          .slice(start, end);
+      },
+      copy(element) {
+        var $temp = $("<input>");
+        $("body").append($temp);
+        $temp.val(element).select();
+        document.execCommand("copy");
+        $temp.remove();
+      },
+      //Create array of all pages (for loop to display page numbers)
+      pages() {
+        return Array.from({
+          length: Math.ceil(this.total / this.size),
+        });
+      },
+
+      //Next Page
+      nextPage() {
+        this.pageNumber++;
+      },
+
+      //Previous Page
+      prevPage() {
+        this.pageNumber--;
+      },
+
+      //Total number of pages
+      pageCount() {
+        return Math.ceil(this.total / this.size);
+      },
+
+      //Return the start range of the paginated results
+      startResults() {
+        return this.pageNumber * this.size + 1;
+      },
+
+      //Return the end range of the paginated results
+      endResults() {
+        let resultsOnPage = (this.pageNumber + 1) * this.size;
+
+        if (resultsOnPage <= this.total) {
+          return resultsOnPage;
+        }
+
+        return this.total;
+      },
+
+      //Link to navigate to page
+      viewPage(index) {
+        this.pageNumber = index;
+      },
+    };
+  }
+  $(document).ready(function () {
+            $("#searchLb").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $(".lbCards").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+</script>
+
+<body class="bg-grey-100 px-3 font-sans leading-normal tracking-normal">
+  
+  <p class="text-center text-3xl">Donation Leaderboard</p>
+  <div class="container pt-8 mx-auto">
+    <input id="searchLb"
+      placeholder="Search for a user..."
+      type="search"
+      class="block w-full bg-gray-200 focus:outline-none focus:bg-white focus:shadow text-gray-700 font-bold rounded-lg px-4 py-3"
+    />
+    <div id="lbCards" class="mt-4 grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4">
+      <% topDono.map(item => { %>
+        <div ondblclick="copy('<%= item.id %>')" class="lbCards">
+          <div
+          class="flex items-center shadow hover:text-gray-700 hover:bg-indigo-100 hover:shadow-lg hover:rounded transition duration-150 ease-in-out transform hover:scale-105 p-3"
+        >
+          <div>
+            <p hidden><%= item.id %></p>
+            <p class="font-mono text-blue-300 text-xl px-2"><%= item.employeeAge %></p>
+          </div>
+          <img
+            class="w-10 h-10 rounded-full mr-4"
+            src="<%= item.profileImage %>"
+          />
+          <div class="text-sm">
+            <p
+              class=" leading-none"
+            ><%= item.employeeName %></p>
+            <p
+              class=""
+            ><%= item.employeeSalary.toLocaleString() %></p>
+          </div>
+        </div>
+        </div>
+      <%})%>
+    </div>
+
+  </div>
+</body>

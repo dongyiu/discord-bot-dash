@@ -1,0 +1,64 @@
+
+
+<h4 class="theme-text mt-2 ms-1 " style="font-weight: 400; user-select: none;">
+    <i class="fas fa-cog"></i>
+    | Heist Setup</h4>
+<div class="ms-1 form-responsive">
+    <% const server=bot.guilds.cache.get(guild_id) %>
+        <form action="/guild_settings" method="POST" id="settings">
+
+            <div class="form-group mt-3">
+                <label class="theme-text" for="channel">Heist Channel</label>
+                <select id="channel" name="channel" class="form-select"
+                    aria-label="Default select example">
+                    <% let channel=server.channels.cache.get(heistConf.settings.heistChannel) %>
+                        <option value="<%= channel?.id || null %>">
+                            <%= channel?.name || 'Select the channel' %>
+                        </option>
+                        <% for(let channel of server.channels.cache.filter(a => a.type == 'GUILD_TEXT').map(x=> x)) {%>
+                            <% if(channel.id===heistConf.settings.heistChannel) continue;%>
+                                <option value="<%= channel.id %>">
+                                    <%= channel.name %>
+                                </option>
+                                <% } %>
+                </select>
+            </div>
+
+            <div class="form-group mt-2">
+                <label class="theme-text" for="invite_link">Invite Link</label>
+                <input value="<%= heistConf.settings.inviteLink %>" class="form-control"
+                    name="invite_link" id="invite_link" type="text" placeholder="Some cool invite link">
+            </div>
+
+            <div class="form-group mt-2">
+                <label class="theme-text" for="minHeistAmount">Minimum Heist Amount</label>
+                <input min="0" value="<%= heistConf.settings.minHeistAmount %>" class="form-control"
+                    name="min_heist_amount" id="min_heist_amount" type="number" placeholder="Amount">
+            </div>
+
+            <div class="form-group mt-3">
+                <label class="theme-text" for="notifs">Notification Channel</label>
+                <select id="notifs" name="notifs" class="form-select"
+                    aria-label="Default select example">
+                    <% let channell = server.channels.cache.get(heistConf.notifs.channel) %>
+                        <option value="<%= channell?.id || null %>">
+                            <%= channell?.name || 'Select the channel' %>
+                        </option>
+                        <% for(let channell of server.channels.cache.filter(a => a.type == 'GUILD_TEXT').map(x=> x)) {%>
+                            <% if(channell.id===heistConf.notifs.channel) continue;%>
+                                <option value="<%= channell.id %>">
+                                    <%= channell.name %>
+                                </option>
+                                <% } %>
+                </select>
+            </div>
+
+            <div class="form-group mt-2 text-end">
+                <input name="guild_id" value="<%= server.id %>" style="display: none">
+                <button class="btn btn-primary mt-2 py-1 px-4" type="button"
+                    onclick="save('<%= server.id %>')">Save Changes</button>
+            </div>
+
+        </form>
+</div><br>
+<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
